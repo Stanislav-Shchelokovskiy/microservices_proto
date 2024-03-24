@@ -18,10 +18,13 @@ mkdir -p go/${SERVICE_NAME}
 protoc --go_out=./go --go_opt=paths=source_relative \
   --go-grpc_out=./go --go-grpc_opt=paths=source_relative \
  ./${SERVICE_NAME}/*.proto
+
 cd go/${SERVICE_NAME}
+
 go mod init \
-  git@github.com:Stanislav-Shchelokovskiy/microservices_proto/go/${SERVICE_NAME} ||true
+  github.com/Stanislav-Shchelokovskiy/microservices_proto/go/${SERVICE_NAME} ||true
 go mod tidy
+
 cd ../../
 git add . && git commit -am "proto update" || true
 git push origin HEAD:main
