@@ -2,6 +2,9 @@
 SERVICE_NAME=$1
 RELEASE_VERSION=$2
 
+echo service name ${SERVICE_NAME}
+echo release version ${RELEASE_VERSION}
+
 echo "Install deps"
 sudo apt install -y protobuf-compiler golang-goprotobuf-dev
 go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
