@@ -14,9 +14,9 @@ go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 
 
-for serviceName in order payment shipping;
+for SERVICE_NAME in order payment shipping;
 do
-    SERVICE_PATH=go/${serviceName}
+    SERVICE_PATH=go/${SERVICE_NAME}
     mkdir -p ${SERVICE_PATH}
 
     protoc  --go_out=./go --go_opt=paths=source_relative \
