@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option go_package = "github.com/Stanislav-Shchelokovskiy/microservices_proto/shipping";
+
+message CreateShippingRequest {
+    string address = 1;
+}
+
+message CreateShippingResponse {}
+
+service Shipping{
+    rpc Create(CreateOrderRequest) returns (CreateShippingResponse){}
+}
