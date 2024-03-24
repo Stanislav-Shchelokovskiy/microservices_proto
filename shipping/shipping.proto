@@ -9,5 +9,5 @@ message CreateShippingRequest {
 message CreateShippingResponse {}
 
 service Shipping{
-    rpc Create(CreateOrderRequest) returns (CreateShippingResponse){};
+    rpc Create(CreateShippingRequest) returns (CreateShippingResponse){};
 }
