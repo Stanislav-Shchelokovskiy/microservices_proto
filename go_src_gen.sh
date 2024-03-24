@@ -4,10 +4,11 @@ SERVICE_NAME=$1
 RELEASE_VERSION=$2
 USER_NAME=$3
 EMAIL=$4
+BRANCH=main
 
 git config user.name "$USER_NAME"
 git config user.email "$EMAIL"
-git pull && git checkout main
+git pull && git checkout ${BRANCH}
 
 sudo apt-get install -y protobuf-compiler golang-goprotobuf-dev
 go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
@@ -27,7 +28,7 @@ go mod tidy
 
 cd ../../
 git add . && git commit -am "proto update" || true
-git push
+git push origin HEAD:${BRANCH}
 git tag -fa go/${SERVICE_NAME}/${RELEASE_VERSION} \
   -m "go/${SERVICE_NAME}/${RELEASE_VERSION}" 
 git push origin refs/tags/go/${SERVICE_NAME}/${RELEASE_VERSION}
