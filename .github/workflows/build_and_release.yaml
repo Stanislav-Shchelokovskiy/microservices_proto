@@ -8,9 +8,6 @@ jobs:
   protoc:
     name: Generate
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        service: [order, payment, shipping]
     steps:
       - name: Install GO
         uses: actions/setup-go@v2
@@ -23,5 +20,5 @@ jobs:
         shell: bash
         run: |
           chmod +x ${GITHUB_WORKSPACE}/go_src_gen.sh
-          ./go_src_gen.sh ${{ matrix.service }} ${{ env.RELEASE_VERSION }} ${{ github.actor }} ${{ github.actor }}@users.noreply.github.com
+          ./go_src_gen.sh ${{ env.RELEASE_VERSION }} ${{ github.actor }} ${{ github.actor }}@users.noreply.github.com
 

@@ -1,34 +1,38 @@
 #!/bin/bash
 
-SERVICE_NAME=$1
-RELEASE_VERSION=$2
-USER_NAME=$3
-EMAIL=$4
-BRANCH=main
+RELEASE_VERSION=$1
+USER_NAME=$2
+EMAIL=$3
 
 git config user.name "$USER_NAME"
 git config user.email "$EMAIL"
-git pull && git checkout ${BRANCH}
+git pull
+git checkout main
 
 sudo apt-get install -y protobuf-compiler golang-goprotobuf-dev
 go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 
-mkdir -p go/${SERVICE_NAME}
 
-protoc --go_out=./go --go_opt=paths=source_relative \
-  --go-grpc_out=./go --go-grpc_opt=paths=source_relative \
- ./${SERVICE_NAME}/*.proto
+for serviceName in order payment shipping;
+do
+    SERVICE_PATH=go/${serviceName}
+    mkdir -p ${SERVICE_PATH}
 
-cd go/${SERVICE_NAME}
+    protoc  --go_out=./go --go_opt=paths=source_relative \
+            --go-grpc_out=./go --go-grpc_opt=paths=source_relative \
+            ./${SERVICE_NAME}/*.proto
 
-go mod init \
-  github.com/Stanislav-Shchelokovskiy/microservices_proto/go/${SERVICE_NAME} ||true
-go mod tidy
+    cd ${SERVICE_PATH}
 
-cd ../../
-git add . && git commit -am "proto update" || true
-git push origin HEAD:${BRANCH}
-git tag -fa go/${SERVICE_NAME}/${RELEASE_VERSION} \
-  -m "go/${SERVICE_NAME}/${RELEASE_VERSION}" 
-git push origin refs/tags/go/${SERVICE_NAME}/${RELEASE_VERSION}
+    go mod init github.com/Stanislav-Shchelokovskiy/microservices_proto/${SERVICE_PATH}
+    go mod tidy
+
+    cd ../../
+
+    git add .
+    git commit -am "proto update"
+    git push
+    git tag -fa ${SERVICE_PATH}/${RELEASE_VERSION} -m "${SERVICE_PATH}/${RELEASE_VERSION}" 
+    git push origin refs/tags/${SERVICE_PATH}/${RELEASE_VERSION}
+done
