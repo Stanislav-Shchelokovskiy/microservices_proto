@@ -23,5 +23,5 @@ jobs:
         shell: bash
         run: |
           chmod +x ${GITHUB_WORKSPACE}/go_src_gen.sh
-          ./go_src_gen.sh ${{ matrix.service }} ${{ env.RELEASE_VERSION }}
+          ./go_src_gen.sh ${{ matrix.service }} ${{ env.RELEASE_VERSION }} ${{ github.actor }} ${{ github.actor }}@users.noreply.github.com
 
